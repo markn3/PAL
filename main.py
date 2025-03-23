@@ -1,45 +1,39 @@
-# Import necessary libraries
-from llamaapi import LlamaAPI
+from langchain_huggingface import HuggingFaceEndpoint, HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS  # FAISS import remains the same for now
+from langchain.chains import RetrievalQA
+import os
 
-from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
-from langchain_experimental.chat_models import Llama2Chat
+# Ensure your Hugging Face API token is available (you can set it as an environment variable)
+token = open("token.txt", 'r')
+token = token.read()
 
-from langchain_core.messages import SystemMessage
-from langchain_core.prompts.chat import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    MessagesPlaceholder,
+# Initialize your Llama 2 model using the new endpoint
+llama_llm = HuggingFaceEndpoint(
+    repo_id="meta-llama/Llama-2-7b",
+    huggingfacehub_api_token=token,
+    model_kwargs={"temperature": 0.7}
 )
 
-template_messages = [
-    SystemMessage(content="You are a helpful assistant."),
-    MessagesPlaceholder(variable_name="chat_history"),
-    HumanMessagePromptTemplate.from_template("{text}"),
+# Create embeddings for your documents using the new embeddings class
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
+# Example documents representing your resume and project details
+documents = [
+    "I have 5 years of experience in software engineering, specializing in web development...",
+    "During my tenure at XYZ Corp, I led a team to develop a scalable microservices architecture..."
 ]
-prompt_template = ChatPromptTemplate.from_messages(template_messages)
 
-from langchain_community.llms import HuggingFaceTextGenInference
+# Index your documents using FAISS
+vector_store = FAISS.from_texts(documents, embeddings)
 
-llm = HuggingFaceTextGenInference(
-    inference_server_url="http://127.0.0.1:8080/",
-    max_new_tokens=512,
-    top_k=50,
-    temperature=0.1,
-    repetition_penalty=1.03,
+# Create a RetrievalQA chain for your chatbot
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llama_llm,
+    chain_type="stuff",  # You can experiment with 'map_reduce', 'refine', etc.
+    retriever=vector_store.as_retriever()
 )
 
-model = Llama2Chat(llm=llm)
-
-memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-chain = LLMChain(llm=model, prompt=prompt_template, memory=memory)
-
-print(
-    chain.run(
-        text="What can I see in Vienna? Propose a few locations. Names only, no details."
-    )
-)
-# guide: https://python.langchain.com/docs/integrations/chat/llama2_chat/
-
-
-
+# Ask a question about your resume/projects
+question = "Can you tell me about my work experience?"
+answer = qa_chain.run(question)
+print("Chatbot Answer:", answer)

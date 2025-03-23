@@ -1,5 +1,7 @@
 langchain
 langchain-community
-llamaapi
+# llamaapi
 langchain_experimental
 text_generation
+sentence-transformers
+faiss-gpu
