@@ -11,7 +11,7 @@ token = token.read()
 llama_llm = HuggingFaceEndpoint(
     repo_id="meta-llama/Llama-2-7b",
     huggingfacehub_api_token=token,
-    model_kwargs={"temperature": 0.7}
+    model_kwargs=0.7
 )
 
 # Create embeddings for your documents using the new embeddings class
@@ -37,3 +37,5 @@ qa_chain = RetrievalQA.from_chain_type(
 question = "Can you tell me about my work experience?"
 answer = qa_chain.run(question)
 print("Chatbot Answer:", answer)
+
+# https://python.langchain.com/docs/integrations/providers/huggingface/
