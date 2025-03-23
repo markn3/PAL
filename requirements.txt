@@ -1,1 +1,5 @@
 langchain
+langchain-community
+llamaapi
+langchain_experimental
+text_generation
