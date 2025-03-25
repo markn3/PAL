@@ -40,3 +40,6 @@ retrieval_qa = RetrievalQA.from_chain_type(
 query = "Can you tell me about your AI chatbot project?"
 answer = retrieval_qa.invoke({"query": query})
 print("Answer:", answer)
+
+
+# RAG: https://python.langchain.com/docs/tutorials/rag/
