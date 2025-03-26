@@ -5,3 +5,6 @@ langchain_experimental
 text_generation
 sentence-transformers
 faiss-gpu
+langchain-mistralai
+langgraph
+bs4
