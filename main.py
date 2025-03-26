@@ -1,3 +1,6 @@
+
+
+
 with open("token.txt", "r") as token_file:
     tokens = token_file.read().strip()
 HUGGINGFACEHUB_API_TOKEN = tokens.split()[0]
@@ -25,3 +28,14 @@ vector_store = FAISS(
     docstore=InMemoryDocstore(),
     index_to_docstore_id={},
 )
+
+# Load and chunk contents
+from langchain_community.document_loaders import TextLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter # try both
+
+loader = TextLoader("./data/resume.md")
+docs = loader.load()
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=20)
+all_splits = text_splitter.split_documents(docs)
+print(text_splitter)
