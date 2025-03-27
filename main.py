@@ -1,6 +1,3 @@
-
-
-
 with open("token.txt", "r") as token_file:
     tokens = token_file.read().strip()
 HUGGINGFACEHUB_API_TOKEN = tokens.split()[0]
@@ -36,6 +33,12 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHea
 loader = TextLoader("./data/resume.md")
 docs = loader.load()
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=20)
+print(f"Total characters: {len(docs[0].page_content)}")
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 all_splits = text_splitter.split_documents(docs)
-print(text_splitter)
+
+print(f"Split resume into {len(all_splits)} sub-documents.")
+
+
+
