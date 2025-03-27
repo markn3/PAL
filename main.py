@@ -2,11 +2,15 @@ with open("token.txt", "r") as token_file:
     tokens = token_file.read().strip()
 HUGGINGFACEHUB_API_TOKEN = tokens.split()[0]
 LANGSMITH_API_KEY = tokens.split()[1]
-print(LANGSMITH_API_KEY)
 
-from langchain.chat_models import init_chat_model
+from langchain_huggingface import HuggingFaceEndpoint
 
-llm = init_chat_model("mistral-large-latest", model_provider="mistralai")
+repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
+llm = HuggingFaceEndpoint(
+    repo_id=repo_id,
+    temperature=0.5,
+    huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN,
+)
 
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -55,5 +59,13 @@ example_messages = prompt.invoke(
 assert len(example_messages) == 1
 print(example_messages[0].content)
 
+question = "Where did you study?"
+
+retrieved_docs = vector_store.similarity_search(question)
+docs_content = "\n\n".join(doc.page_content for doc in retrieved_docs)
+prompt = prompt.invoke({"question": question, "context": docs_content})
+answer = llm.invoke(prompt)
+
+print("Answer:", answer)
 
 
