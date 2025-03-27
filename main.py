@@ -40,5 +40,20 @@ all_splits = text_splitter.split_documents(docs)
 
 print(f"Split resume into {len(all_splits)} sub-documents.")
 
+# Store vectors
+document_ids = vector_store.add_documents(documents=all_splits)
+
+# Retrieval and Generation
+from langchain import hub
+
+prompt = hub.pull("rlm/rag-prompt")
+
+example_messages = prompt.invoke(
+    {"context": "(context goes here)", "question": "(question goes here)"}
+).to_messages()
+
+assert len(example_messages) == 1
+print(example_messages[0].content)
+
 
 
