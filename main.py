@@ -59,7 +59,7 @@ example_messages = prompt.invoke(
 assert len(example_messages) == 1
 print(example_messages[0].content)
 
-question = "Where did you study?"
+question = "What are your experiences?"
 
 retrieved_docs = vector_store.similarity_search(question)
 docs_content = "\n\n".join(doc.page_content for doc in retrieved_docs)
@@ -67,5 +67,7 @@ prompt = prompt.invoke({"question": question, "context": docs_content})
 answer = llm.invoke(prompt)
 
 print("Answer:", answer)
+
+# RAG: https://python.langchain.com/docs/tutorials/rag/
 
 
