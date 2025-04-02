@@ -1,7 +1,6 @@
 import streamlit as st
 from rag import llm_init, get_answer
 
-
 # Title for the portfolio chatbot
 st.title("Portfolio Chatbot")
 

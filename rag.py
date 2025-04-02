@@ -34,9 +34,16 @@ def llm_init():
     # Load and chunk contents
     from langchain_community.document_loaders import TextLoader
     from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter # try both
+    import glob
 
-    loader = TextLoader("./data/resume.md")
-    docs = loader.load()
+    # Get all markdowns from /data/
+    md_files = glob.glob("./data/*.md")
+
+    docs = []
+
+    for file in md_files:
+        loader = TextLoader(file)
+        docs.extend(loader.load())
 
     print(f"Total characters: {len(docs[0].page_content)}")
 
