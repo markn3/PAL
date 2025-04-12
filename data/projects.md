@@ -7,3 +7,4 @@
 **Machine Learning Madness**
 
 **Vital Sign Forecasting For ICU Patients**
+Used Temporal Fusion Transformer to multi-step forecast Vital signs such as heart rate for ICU patients. The MIMIC-IV dataset was used.
