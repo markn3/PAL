@@ -14,5 +14,5 @@ Classes taken:
 - Online Learning and Optimization
 - Optimization
 
-**Bachelor of Science, Artificial Intelligence**
-Studied starting from Fall 2020 and graduated December 2022 from the University of Texas Rio Grande Valley. 
+**Bachelor of Science, Computer Science**
+Studied starting from Fall 2020 and graduated December 2022 from the University of Texas Rio Grande Valley. Got my bachelor of Science in Computer Science
